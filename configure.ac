@@ -109,7 +109,11 @@ case "$target_cpu" in
   i[[3456]]86)	target_cpu=i386 ;;
   amd64)	target_cpu=x86_64 ;;
   sparc)	target_cpu=sparc64 ;;
-  mipsel|mips64el)
+  mips64el)
+                target_cpu=mips64el
+		machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_CPU_MIPS64EL=1"
+		;;
+  mipsel)
                 target_cpu=mipsel
 		machine_CPPFLAGS="$machine_CPPFLAGS -DGRUB_CPU_MIPSEL=1"
 		;;
@@ -140,6 +144,7 @@ if test "x$with_platform" = x; then
     powerpc64-*) platform=ieee1275 ;;
     powerpc64le-*) platform=ieee1275 ;;
     sparc64-*) platform=ieee1275 ;;
+    mips64el-*) platform=efi;;
     mipsel-*) platform=loongson ;;
     mips-*) platform=arc ;;
     ia64-*) platform=efi ;;
@@ -192,6 +197,7 @@ case "$target_cpu"-"$platform" in
   mipsel-yeeloong) platform=loongson ;;
   mipsel-fuloong) platform=loongson ;;
   mipsel-loongson) ;;
+  mips64el-efi) ;;
   arm-uboot) ;;
   arm-coreboot) ;;
   arm-efi) ;;
@@ -1378,10 +1384,15 @@ grub_CHECK_PIC
 # movk's which aren't representable.
 # Since default varies across dictributions use either -fPIC or -fno-PIC
 # explicitly.
-if ( test x$target_cpu = xmips || test x$target_cpu = xmipsel || test x$target_cpu = xarm64 ) && test "x$grub_cv_cc_target_clang" = xyes ; then
+if ( test x$target_cpu = xmips || test x$target_cpu = xmipsel || test x$target_cpu = xarm64 || test x$target_cpu = xmips64el ) && test "x$grub_cv_cc_target_clang" = xyes ; then
    TARGET_CFLAGS="$TARGET_CFLAGS -fPIC"
 elif [ x"$pic_possible" = xyes ]; then
    TARGET_CFLAGS="$TARGET_CFLAGS -fno-PIC"
+fi
+# Don't generate SVR4-style position-independent code for MIPS64.
+if test x$target_cpu = xmips64el ; then
+   TARGET_CFLAGS="$TARGET_CFLAGS -mno-abicalls"
+   TARGET_CCASFLAGS="$TARGET_CCASFLAGS -mno-abicalls"
 fi]
 
 CFLAGS="$TARGET_CFLAGS"
@@ -2082,6 +2093,8 @@ AM_CONDITIONAL([COND_mips], [test x$target_cpu = xmips -o x$target_cpu = xmipsel
 AM_CONDITIONAL([COND_mips_arc], [test "(" x$target_cpu = xmips -o x$target_cpu = xmipsel ")"  -a x$platform = xarc])
 AM_CONDITIONAL([COND_mips_loongson], [test x$target_cpu = xmipsel -a x$platform = xloongson])
 AM_CONDITIONAL([COND_mips_qemu_mips], [test "(" x$target_cpu = xmips -o x$target_cpu = xmipsel ")"  -a x$platform = xqemu_mips])
+AM_CONDITIONAL([COND_mips64_efi], [test x$target_cpu = xmips64el -a x$platform = xefi])
+AM_CONDITIONAL([COND_mips64el], [test x$target_cpu = xmips64el])
 AM_CONDITIONAL([COND_mipsel], [test x$target_cpu = xmipsel])
 AM_CONDITIONAL([COND_mipseb], [test x$target_cpu = xmips])
 AM_CONDITIONAL([COND_powerpc_ieee1275], [test x$target_cpu = xpowerpc -a x$platform = xieee1275])
@@ -2143,7 +2156,9 @@ AC_DEFINE_UNQUOTED(GRUB_SYSCONFDIR, "$grub_sysconfdir", [Configuration dir])
 # Output files.
 if test "$platform" != none; then
   cpudir="${target_cpu}"
-  if test x${cpudir} = xmipsel; then
+  if test x${cpudir} = xmips64el; then
+    cpudir=mips64;
+  elif test x${cpudir} = xmipsel; then
     cpudir=mips;
   fi
   grub_CHECK_LINK_DIR

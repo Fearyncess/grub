@@ -460,7 +460,7 @@ void grub_reboot (void) __attribute__ ((noreturn));
 /* Halt the system, using APM if possible. If NO_APM is true, don't
  * use APM even if it is available.  */
 void grub_halt (int no_apm) __attribute__ ((noreturn));
-#elif defined (__mips__) && !defined (GRUB_MACHINE_EMU)
+#elif (defined (__mips__) && (_MIPS_SIM != _ABI64)) && !defined (GRUB_MACHINE_EMU)
 void EXPORT_FUNC (grub_halt) (void) __attribute__ ((noreturn));
 #else
 void grub_halt (void) __attribute__ ((noreturn));

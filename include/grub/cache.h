@@ -37,7 +37,8 @@ void EXPORT_FUNC(grub_arch_sync_caches) (void *address, grub_size_t len);
 #if defined (__aarch64__) || defined (__ia64__) || defined (__powerpc__) || \
     defined (__sparc__)
 
-#elif defined (__i386__) || defined (__x86_64__)
+#elif defined (__i386__) || defined (__x86_64__) || \
+    (defined(__mips__) && (_MIPS_SIM == _ABI64))
 static inline void
 grub_arch_sync_dma_caches (volatile void *address __attribute__ ((unused)),
 			   grub_size_t len __attribute__ ((unused)))
