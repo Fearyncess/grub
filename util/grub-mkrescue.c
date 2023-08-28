@@ -765,7 +765,7 @@ main (int argc, char *argv[])
       || source_dirs[GRUB_INSTALL_PLATFORM_ARM64_EFI]
       || source_dirs[GRUB_INSTALL_PLATFORM_LOONGARCH64_EFI]
       || source_dirs[GRUB_INSTALL_PLATFORM_RISCV32_EFI]
-      || source_dirs[GRUB_INSTALL_PLATFORM_RISCV64_EFI])
+      || source_dirs[GRUB_INSTALL_PLATFORM_RISCV64_EFI]
       || source_dirs[GRUB_INSTALL_PLATFORM_MIPS64EL_EFI])
     {
       FILE *f;
