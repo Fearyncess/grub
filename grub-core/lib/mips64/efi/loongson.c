@@ -353,7 +353,7 @@ grub_efi_loongson_alloc_boot_params (void)
   grub_free (mmap_buf);
 
   b = grub_efi_system_table->boot_services;
-  status = efi_call_4 (b->allocate_pages, type, GRUB_EFI_RUNTIME_SERVICES_DATA, pages, &address);
+  status = b->allocate_pages (type, GRUB_EFI_RUNTIME_SERVICES_DATA, pages, &address);
   if (status != GRUB_EFI_SUCCESS)
     grub_fatal ("cannot allocate Loongson boot parameters!");
 
