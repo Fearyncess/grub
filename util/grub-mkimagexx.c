@@ -2019,7 +2019,6 @@ translate_relocation_pe (struct translate_context *ctx,
 	  break;
 	}
       break;
-      }
 #endif
 #if defined(MKIMAGE_ELF32)
     case EM_ARM:
