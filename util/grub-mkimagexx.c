@@ -2011,8 +2011,8 @@ translate_relocation_pe (struct translate_context *ctx,
 				 (grub_int16_t) ((target & 0x80008000UL) >> 32),
 				 0, ctx->current_address,
 				 image_target);
-	    // fall through
 	  }
+	  break;
 	default:
 	  grub_util_error (_("relocation 0x%x is not implemented yet"),
 			   (unsigned int) ELF_R_TYPE (info));
