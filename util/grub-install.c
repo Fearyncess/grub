@@ -1181,6 +1181,7 @@ main (int argc, char *argv[])
 	      break;
 	    case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
 	      efi_file = "BOOTRISCV64.EFI";
+	      break;
 	    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
 	      efi_file = "BOOTMIPS64EL.EFI";
 	      break;
@@ -1219,6 +1220,7 @@ main (int argc, char *argv[])
 	      break;
 	    case GRUB_INSTALL_PLATFORM_RISCV64_EFI:
 	      efi_file = "grubriscv64.efi";
+	      break;
 	    case GRUB_INSTALL_PLATFORM_MIPS64EL_EFI:
 	      efi_file = "grubmips64el.efi";
 	      break;
