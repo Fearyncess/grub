@@ -21,6 +21,7 @@
 #include <grub/efi/efi.h>
 #include <grub/elf.h>
 #include <grub/elfload.h>
+#include <grub/file.h>
 #include <grub/loader.h>
 #include <grub/dl.h>
 #include <grub/mm.h>
@@ -231,7 +232,7 @@ grub_cmd_linux (grub_command_t cmd __attribute__ ((unused)),
   if (argc == 0)
     return grub_error (GRUB_ERR_BAD_ARGUMENT, N_("filename expected"));
 
-  elf = grub_elf_open (argv[0]);
+  elf = grub_elf_open (argv[0], GRUB_FILE_TYPE_LINUX_KERNEL);
   if (! elf)
     return grub_errno;
 
